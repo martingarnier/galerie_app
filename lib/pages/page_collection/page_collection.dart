@@ -7,6 +7,7 @@ import 'package:galerieapp/models/model_collection.dart';
 import 'package:galerieapp/models/model_galerie.dart';
 import 'package:galerieapp/models/model_photo.dart';
 import 'package:galerieapp/models/model_recherche.dart';
+import 'package:galerieapp/pages/page_collection/alert_ajouter_tag.dart';
 import 'package:galerieapp/pages/page_collection/boite_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -90,10 +91,6 @@ class PageCollectionState extends State<PageCollection>{
           onPressed: () async {
             ImagePicker _picker = ImagePicker();
             PickedFile image = await _picker.getImage(source: ImageSource.gallery);
-            print(image.path);
-
-            //await ImagePicker.pickImage(source: ImageSource.gallery)
-
             Photo p = new Photo(await DBProvider.db.getNextIdPhoto(), c.idCollection, File(image.path));
             if (p.image != null) {
               c.ajouter(p);
@@ -186,37 +183,9 @@ class PageCollectionState extends State<PageCollection>{
   }
 
   void alertAjouterTag(BuildContext context){
-    String nouveauTag = "";
-
     showDialog(context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Entrez le nouveau tag"),
-          content: TextField(
-            onChanged: (value) => nouveauTag = value,
-            autofocus: true,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Annuler"),
-              onPressed: () => Navigator.pop(context),
-            ),
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: (){
-                if(nouveauTag != ""){
-                  Collection c = Provider.of<Collection>(contextCollection, listen: false);
-                  c.ajouterTag(nouveauTag);
-                  DBProvider.db.insererTagCollection(nouveauTag, c.idCollection);
-
-                  Provider.of<Galerie>(contextCollection, listen: false).ajouterTag(nouveauTag);
-                  recherche.updateTags(context);
-                  Navigator.pop(context);
-                }
-              },
-            )
-          ],
-        );
+        return AlertAjouterTag(contextCollection);
       },
     );
   }

@@ -33,6 +33,7 @@ class PhotoState extends State<PagePhoto> {
       value: image,
       builder: (context, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0.0,
@@ -74,7 +75,7 @@ class PhotoState extends State<PagePhoto> {
                     Opacity(
                       opacity: opacity,
                       child: Container(
-                        color: Colors.black12.withOpacity(0.3),
+                        color: Colors.black12.withOpacity(0.5),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical, //.horizontal
                           child: Consumer<Photo>(
