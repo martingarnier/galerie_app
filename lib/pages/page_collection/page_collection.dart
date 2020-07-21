@@ -8,6 +8,7 @@ import 'package:galerieapp/models/model_galerie.dart';
 import 'package:galerieapp/models/model_photo.dart';
 import 'package:galerieapp/models/model_recherche.dart';
 import 'package:galerieapp/pages/page_collection/alert_ajouter_tag.dart';
+import 'package:galerieapp/pages/page_collection/alert_changer_nom_collection.dart';
 import 'package:galerieapp/pages/page_collection/boite_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -126,32 +127,9 @@ class PageCollectionState extends State<PageCollection>{
   }
 
   void alertChangerNomCollection(BuildContext context){
-    String nouveauNomCollection = "";
-
     showDialog(context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Entrez le nouveau nom"),
-          content: TextField(
-            onChanged: (value) => nouveauNomCollection = value,
-            autofocus: true,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Annuler"),
-              onPressed: () => Navigator.pop(context),
-            ),
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: (){
-                if(nouveauNomCollection != ""){
-                  Provider.of<Collection>(contextCollection, listen: false).setNom(nouveauNomCollection);
-                  Navigator.pop(context);
-                }
-              },
-            )
-          ],
-        );
+        return AlertChangerNomCollection(contextCollection);
       },
     );
   }
