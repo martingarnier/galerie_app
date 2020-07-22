@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:galerieapp/models/model_collection.dart';
 import 'package:galerieapp/models/model_photo.dart';
+import 'package:galerieapp/pages/page_photo/alert_changer_description.dart';
 import 'package:provider/provider.dart';
 
 import 'package:photo_view/photo_view.dart';
@@ -80,9 +81,9 @@ class PhotoState extends State<PagePhoto> {
                           scrollDirection: Axis.vertical, //.horizontal
                           child: Consumer<Photo>(
                             builder: (context, value, child) {
-                              return Text(
-                                value.description,
-                                style: Theme.of(context).textTheme.bodyText1,
+                              return Column(
+                                children: textDescription(),
+                                crossAxisAlignment: CrossAxisAlignment.start,
                               );
                             },
                           ),
@@ -99,36 +100,28 @@ class PhotoState extends State<PagePhoto> {
     );
   }
 
-  void alertChangerDescription(BuildContext context) {
-    String newDescription = "";
 
+  List<Widget> textDescription(){
+    List<Widget> liste = {
+      Text(
+        image.description,
+        style: Theme.of(context).textTheme.bodyText1,
+      )
+    }.toList();
+
+    if(image.dateTime!=null) liste.insert(0, Text(
+      image.dateTime.toString().substring(0,10),
+      style: Theme.of(context).textTheme.bodyText1,
+    ));
+
+    return liste;
+  }
+
+
+  void alertChangerDescription(BuildContext context) {
     showDialog(context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Changer la description"),
-          content: TextField(
-            onChanged: (value) => newDescription = value,
-            autofocus: true,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            controller: TextEditingController(text: image.description),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Annuler"),
-              onPressed: () => Navigator.pop(context),
-            ),
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: () {
-                if (newDescription != "") {
-                  image.setDescription(newDescription);
-                  Navigator.pop(context);
-                }
-              },
-            )
-          ],
-        );
+        return AlertChangerDescription(oldContext);
       },
     );
   }

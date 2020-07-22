@@ -1,17 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:galerieapp/database.dart';
 import 'package:galerieapp/models/model_collection.dart';
 import 'package:galerieapp/models/model_galerie.dart';
-import 'package:galerieapp/models/model_photo.dart';
 import 'package:galerieapp/models/model_recherche.dart';
+import 'package:galerieapp/pages/page_collection/alert_ajouter_photo.dart';
 import 'package:galerieapp/pages/page_collection/alert_ajouter_tag.dart';
 import 'package:galerieapp/pages/page_collection/alert_changer_nom_collection.dart';
 import 'package:galerieapp/pages/page_collection/boite_photo.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 
 class PageCollection extends StatefulWidget{
@@ -41,6 +37,7 @@ class PageCollectionState extends State<PageCollection>{
     return ChangeNotifierProvider.value(
       value: c,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: Container(
@@ -89,14 +86,8 @@ class PageCollectionState extends State<PageCollection>{
           ),
         ][_selectedIndex],
         floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            ImagePicker _picker = ImagePicker();
-            PickedFile image = await _picker.getImage(source: ImageSource.gallery);
-            Photo p = new Photo(await DBProvider.db.getNextIdPhoto(), c.idCollection, File(image.path));
-            if (p.image != null) {
-              c.ajouter(p);
-              DBProvider.db.insererPhoto(p);
-            }
+          onPressed: () {
+            alertAjouterPhoto(context, c);
           },
           backgroundColor: AppBarTheme.of(context).color,
           foregroundColor: IconTheme.of(context).color,
@@ -123,6 +114,15 @@ class PageCollectionState extends State<PageCollection>{
           selectedItemColor: Colors.black,
         ),
       ),
+    );
+  }
+
+
+  void alertAjouterPhoto(BuildContext context, Collection c){
+    showDialog(context: context,
+      builder: (context) {
+        return AlertAjouterPhoto(contextCollection);
+      },
     );
   }
 

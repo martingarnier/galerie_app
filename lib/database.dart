@@ -28,7 +28,11 @@ class DBProvider {
     return await openDatabase(
       join(await getDatabasesPath(), 'galerie_database.db'),
       onOpen: (db) async {
-        //db.delete("photo");
+        /*
+        await db.delete("photo");
+        await db.execute("DROP TABLE photo");
+        await db.execute(
+            "CREATE TABLE photo(id_photo INTEGER PRIMARY KEY, id_collection INTEGER, description TEXT, date TEXT)");*/
       },
       version: 1,
       onCreate: (db, version) async {
@@ -37,7 +41,7 @@ class DBProvider {
         await db.execute(
             "CREATE TABLE collection(id_collection INTEGER PRIMARY KEY, nom_collection TEXT)");
         await db.execute(
-            "CREATE TABLE photo(id_photo INTEGER PRIMARY KEY, id_collection INTEGER, description TEXT)");
+            "CREATE TABLE photo(id_photo INTEGER PRIMARY KEY, id_collection INTEGER, description TEXT, date TEXT)");
         await db.execute(
             "CREATE TABLE tag(id_collection INTEGER, nom_tag TEXT)");
 
@@ -170,6 +174,7 @@ class DBProvider {
 
       Photo p = new Photo(maps[i]['id_photo'], maps[i]['id_collection'], image);
       p.setDescription(maps[i]['description']);
+      p.setDateTime(DateTime.parse(maps[i]['date']));
 
       listePhoto.add(p);
     }
@@ -189,6 +194,7 @@ class DBProvider {
 
       Photo p = new Photo(maps[i]['id_photo'], maps[i]['id_collection'], image);
       p.setDescription(maps[i]['description']);
+      p.setDateTime(DateTime.parse(maps[i]['date']));
 
       listePhoto.add(p);
     }

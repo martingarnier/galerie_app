@@ -31,7 +31,8 @@ class Photo extends ChangeNotifier{
     return{
       'id_photo': _idPhoto,
       'id_collection': _idCollection,
-      'description': _description
+      'description': _description,
+      'date': _dateTime.toString()
     };
   }
 
