@@ -22,7 +22,7 @@ class ListeCollection extends StatelessWidget{
             ),
             Container(
               margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-              padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(

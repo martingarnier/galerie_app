@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:galerieapp/database.dart';
 import 'package:galerieapp/models/model_collection.dart';
 import 'package:galerieapp/models/model_photo.dart';
@@ -101,7 +102,7 @@ class AlertAjouterPhotoState extends State<AlertAjouterPhoto>{
           ),
           Container(
             margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-            padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+            padding: EdgeInsets.only(top: 5, bottom: 5,),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -118,25 +119,37 @@ class AlertAjouterPhotoState extends State<AlertAjouterPhoto>{
             ),
             child: Row(
               children: <Widget>[
+               date==null ? Text("") : IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      date = null;
+                    });
+                  },
+                ),
                 Text(date==null ? "" : date.toString().substring(0,10)),
                 Expanded(
                   child: IconButton(
                     icon: Icon(Icons.date_range),
                     onPressed: () async {
-                      date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900, 1),
-                          lastDate: DateTime.now()
+                      DatePicker.showDatePicker(context,
+                        currentTime: DateTime.now(),
+                        minTime: DateTime(1900, 1),
+                        maxTime: DateTime.now(),
+                        locale: LocaleType.fr,
+                        onConfirm: (time) {
+                          setState(() {
+                            date = time;
+                          });
+                        },
                       );
-                      setState(() {
-                      });
                     },
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
+          image == null ? Text("Il faut mettre une image !", style: Theme.of(context).textTheme.headline4) : Text("")
         ],
       ),
       actions: <Widget>[
@@ -154,7 +167,7 @@ class AlertAjouterPhotoState extends State<AlertAjouterPhoto>{
               p.setDescription(nouvelleDescription);
               p.setDateTime(date);
               Navigator.pop(context);
-            };
+            }
           },
         )
       ],

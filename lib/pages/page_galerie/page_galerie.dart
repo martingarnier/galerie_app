@@ -9,7 +9,6 @@ import 'package:galerieapp/pages/page_galerie/menu_recherche.dart';
 class PageGalerie extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -48,7 +47,7 @@ class PageGalerie extends StatelessWidget{
         tooltip: 'Ajouter une collection',
         child: Icon(Icons.add),
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
     );
   }
 

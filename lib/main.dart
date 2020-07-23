@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:galerieapp/database.dart';
 import 'package:galerieapp/models/model_recherche.dart';
 import 'file:///D:/Games/FlutterApp/myapp/galerie_app/lib/pages/page_galerie/page_galerie.dart';
@@ -54,8 +55,16 @@ class MyApp extends StatelessWidget{
           bodyText1: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w800, color: Colors.white70),
           subtitle1: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black),
           subtitle2: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.black),
+          headline4: TextStyle(fontSize: 12.0, color: Colors.red)
         ),
       ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr')
+      ],
       home: PageGalerie(),
     );
   }

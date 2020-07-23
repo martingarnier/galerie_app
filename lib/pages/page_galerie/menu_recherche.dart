@@ -2,11 +2,14 @@ import 'package:filter_list/filter_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:galerieapp/models/model_recherche.dart';
+import 'package:galerieapp/pages/page_galerie/recherche_date.dart';
 import 'package:galerieapp/pages/page_resultat_collection/page_resultat_collection.dart';
 import 'package:galerieapp/pages/page_resultat_photo/page_resultat_photo.dart';
 import 'package:provider/provider.dart';
 
 class MenuRecherche extends StatelessWidget{
+
+  final _controllerTextField = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,7 @@ class MenuRecherche extends StatelessWidget{
             icon: Icon(Icons.delete),
             onPressed: () {
               recherche.resetRecherche();
+              _controllerTextField.clear();
             },
           )
         ],
@@ -30,7 +34,7 @@ class MenuRecherche extends StatelessWidget{
           Expanded(
               flex: 10,
               child: Container(
-                margin: EdgeInsets.only(right: 20, left: 20),
+                margin: EdgeInsets.only(right: 10, left: 10),
                 padding: EdgeInsets.only(top: 20, bottom: 5, left: 10, right: 10),
                 child: Consumer<Recherche>(
                   builder: (context, value, child) {
@@ -49,11 +53,11 @@ class MenuRecherche extends StatelessWidget{
                     child: Container(
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.black12,
+                        color: Colors.white,
                         border: Border.all(
                           color: Colors.black,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -84,11 +88,11 @@ class MenuRecherche extends StatelessWidget{
                     child: Container(
                       margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: Colors.black12,
+                        color: Colors.white,
                         border: Border.all(
                           color: Colors.black,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.3),
@@ -147,6 +151,7 @@ class MenuRecherche extends StatelessWidget{
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   alertSupprimerTag(context, tag);
+                  recherche.setTextRecherche("");
                   recherche.updateTags(context);
                 },
                 iconSize: 20,
@@ -157,22 +162,32 @@ class MenuRecherche extends StatelessWidget{
       );
     }).toList();
 
-    liste.add(Container(
-      margin: EdgeInsets.all(20),
+    liste.insert(0, Container(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+          ),
+        ],
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
         child: FlatButton(
           child: Text(
-            "Rechercher des tags",
+            "Rechercher des mot-clés",
             style: TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.w600,
-                color: Colors.white),
+                color: Colors.black),
           ),
-          color: Colors.black54,
-          textColor: Colors.white,
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          splashColor: Colors.grey,
           onPressed: () {
             recherche.updateTags(context);
             _openFilterList(context);
@@ -181,11 +196,34 @@ class MenuRecherche extends StatelessWidget{
       ),
     ));
 
-    var _controllerTextField = TextEditingController();
 
     liste.insert(0,
         Container(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: EdgeInsets.only(top: 15, bottom: 15),
+          child: Divider(color: Colors.black,),
+        )
+    );
+
+
+    liste.insert(0,
+      Container(
+        child: RechercheDate(),
+        height: 180,
+      )
+    );
+
+
+    liste.insert(0,
+        Container(
+          child: Divider(color: Colors.black,),
+          padding: EdgeInsets.only(top: 15, bottom: 15),
+        )
+    );
+
+
+    liste.insert(0,
+        Container(
+          padding: EdgeInsets.only(left: 10),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -205,7 +243,9 @@ class MenuRecherche extends StatelessWidget{
               recherche.setTextRecherche(value);
               recherche.updateTags(context);
             },
+            controller: _controllerTextField,
             decoration: InputDecoration(
+                hintText: "Rechercher du texte",
                 border: InputBorder.none,
                 suffixIcon: IconButton(
                   icon: Icon(Icons.clear),
@@ -265,7 +305,7 @@ class MenuRecherche extends StatelessWidget{
       borderRadius: 20,
       hideheaderText: true,
 
-      searchFieldHintText: "Rechercher un tag",
+      searchFieldHintText: "Rechercher un mot-clé",
       selectedTextList: recherche.listeTagsSelect,
     );
 

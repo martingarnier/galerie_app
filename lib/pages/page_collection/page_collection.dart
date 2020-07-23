@@ -37,7 +37,7 @@ class PageCollectionState extends State<PageCollection>{
     return ChangeNotifierProvider.value(
       value: c,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: Container(
@@ -102,7 +102,7 @@ class PageCollectionState extends State<PageCollection>{
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.list),
-                title: Text("Tags")
+                title: Text("Mots-clés")
             )
           ],
           currentIndex: _selectedIndex,

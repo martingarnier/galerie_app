@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:galerieapp/models/model_photo.dart';
 import 'package:provider/provider.dart';
 
@@ -16,19 +17,20 @@ class AlertChangerDescription extends StatefulWidget{
 class AlertChangerDescriptionState extends State<AlertChangerDescription>{
 
   final BuildContext contextPhoto;
-  String nouvelleDescription = "";
+  String nouvelleDescription;
   DateTime nouvelleDate;
   Photo image;
 
-  AlertChangerDescriptionState(this.contextPhoto);
+  AlertChangerDescriptionState(this.contextPhoto){
+    image = Provider.of<Photo>(contextPhoto);
+    nouvelleDescription = image.description;
+    nouvelleDate = image.dateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    image = Provider.of<Photo>(contextPhoto);
-    nouvelleDate = image.dateTime;
-
     return AlertDialog(
+      scrollable: true,
       title: Text("Changer la description"),
       content: Column(
         children: <Widget>[
@@ -74,22 +76,32 @@ class AlertChangerDescriptionState extends State<AlertChangerDescription>{
               ],
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                nouvelleDate==null ? Text("") : IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      nouvelleDate = null;
+                    });
+                  },
+                ),
                 Text(nouvelleDate==null ? "" : nouvelleDate.toString().substring(0,10)),
-                Expanded(
-                  child: IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () async {
-                      nouvelleDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900, 1),
-                          lastDate: DateTime.now()
-                      );
-                      setState(() {
-                      });
-                    },
-                  ),
+                IconButton(
+                  icon: Icon(Icons.date_range),
+                  onPressed: () async {
+                    DatePicker.showDatePicker(context,
+                      currentTime: DateTime.now(),
+                      minTime: DateTime(1900, 1),
+                      maxTime: DateTime.now(),
+                      locale: LocaleType.fr,
+                      onConfirm: (time) {
+                        setState(() {
+                          nouvelleDate = time;
+                        });
+                      },
+                    );
+                  },
                 )
               ],
             ),

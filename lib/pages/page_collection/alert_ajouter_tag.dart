@@ -23,7 +23,7 @@ class AlertAjouterTagState extends State<AlertAjouterTag>{
   String nouveauTag = "";
   final BuildContext contextCollection;
   Collection c;
-  String error = "Le tag doit contenir un caractère !";
+  String error = "Un mot-clé doit contenir un caractère !";
 
   AlertAjouterTagState(this.contextCollection);
 
@@ -33,13 +33,13 @@ class AlertAjouterTagState extends State<AlertAjouterTag>{
     c = Provider.of<Collection>(contextCollection, listen: false);
 
     return AlertDialog(
-      title: Text("Entrez le nouveau tag"),
+      title: Text("Entrer un nouveau mot-clé"),
       content: TextField(
         onChanged: (value) {
           nouveauTag = value;
           setState(() {
-            if(nouveauTag == "") error = "Le tag doit contenir un caractère !";
-            else if(c.tags.contains(nouveauTag)) error = "Cette collection possède déjà ce tag !";
+            if(nouveauTag == "") error = "Un mot-clé doit contenir un caractère !";
+            else if(c.tags.contains(nouveauTag)) error = "Cette collection possède déjà ce mot-clé !";
             else error = "";
           });
         },

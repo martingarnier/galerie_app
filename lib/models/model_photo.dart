@@ -20,11 +20,13 @@ class Photo extends ChangeNotifier{
 
   void setDescription(String d){
     _description = d;
+    notifyListeners();
     DBProvider.db.updatePhoto(this);
   }
 
   void setDateTime(DateTime d){
     _dateTime = d;
+    notifyListeners();
   }
 
   Map<String, dynamic> toMap(){

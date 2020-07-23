@@ -9,6 +9,8 @@ class Recherche extends ChangeNotifier{
   List<String> _listeTagsSelect;
   List<String> _listeTagsDispo;
   String _textRecherche;
+  DateTime _dateDebut;
+  DateTime _dateFin;
   List<Collection> _resultatRechercheCollection;
   List<Photo> _resultatRecherchePhoto;
 
@@ -23,12 +25,22 @@ class Recherche extends ChangeNotifier{
   List<String> get listeTagsSelect => _listeTagsSelect;
   List<String> get listeTagsDispo => _listeTagsDispo;
   String get textRecherche => _textRecherche;
+  DateTime get dateDebut => _dateDebut;
+  DateTime get dateFin =>  _dateFin;
   List<Collection> get resultatRechercheCollection => _resultatRechercheCollection;
   List<Photo> get resultatRecherchePhoto => _resultatRecherchePhoto;
 
   void setTextRecherche(String s){
-    _textRecherche = s;
+    _textRecherche = s.toLowerCase();
     notifyListeners();
+  }
+
+  void setDateDebut(DateTime date){
+    _dateDebut = date;
+  }
+
+  void setDateFin(DateTime date){
+    _dateFin = date;
   }
 
   void ajouterTag(String tag){
@@ -49,6 +61,8 @@ class Recherche extends ChangeNotifier{
   void resetRecherche(){
     _listeTagsSelect.removeWhere((element) => true);
     _textRecherche = "";
+    _dateDebut = null;
+    _dateFin = null;
     notifyListeners();
   }
 
@@ -77,7 +91,30 @@ class Recherche extends ChangeNotifier{
 
     _resultatRecherchePhoto.clear();
 
-    textRecherche == "" ? _resultatRechercheCollection.forEach((collection) {_resultatRecherchePhoto.addAll(collection.photos);}) : _resultatRechercheCollection.forEach((collection) {collection.photos.forEach((photo) {if(photo.description.contains(textRecherche))_resultatRecherchePhoto.add(photo);});});
+    if(dateDebut != null){
+      if(dateFin != null){
+        _resultatRechercheCollection.forEach((collection) {
+          collection.photos.forEach((photo) {
+            if(photo.dateTime.isAfter(dateDebut) && photo.dateTime.isBefore(dateFin) && photo.description.toLowerCase().contains(textRecherche))_resultatRecherchePhoto.add(photo);
+          });
+        });
+      }
+      else{
+        _resultatRechercheCollection.forEach((collection) {
+          collection.photos.forEach((photo) {
+            if(photo.dateTime.isAtSameMomentAs(dateDebut) && photo.description.toLowerCase().contains(textRecherche))_resultatRecherchePhoto.add(photo);
+          });
+        });
+      }
+    }
+    else{
+      textRecherche == "" ? _resultatRechercheCollection.forEach((collection) {_resultatRecherchePhoto.addAll(collection.photos);})
+          : _resultatRechercheCollection.forEach((collection) {
+        collection.photos.forEach((photo) {
+          if(photo.description.toLowerCase().contains(textRecherche))_resultatRecherchePhoto.add(photo);
+        });
+      });
+    }
 
     notifyListeners();
   }
